@@ -1,0 +1,17 @@
+### Create new Brand
+POST http://localhost:8080/api/brands
+Content-Type: application/json
+
+{ "name": "LG" }
+
+### Create new Category
+POST http://localhost:8080/api/categories
+Content-Type: application/json
+
+{ "name": "Electronics" }
+
+### Create new Item
+POST http://localhost:8080/api/items
+Content-Type: application/json
+
+{ "name": "Light", "price": 50000.0, "brand": 1, "category": 1 }
