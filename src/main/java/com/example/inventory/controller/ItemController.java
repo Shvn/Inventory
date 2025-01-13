@@ -1,5 +1,6 @@
 package com.example.inventory.controller;
 
+import com.example.inventory.kafka.ItemProducer;
 import com.example.inventory.service.ItemService;
 import com.example.inventory.entity.ItemEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
+    @Autowired
+    private ItemProducer itemProducer;
+
     @GetMapping
     public List<ItemEntity> getAllItems() {
         return itemService.getAllItems();
@@ -24,7 +28,9 @@ public class ItemController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ItemEntity createItem(@RequestBody ItemEntity item) {
-        return itemService.saveItem(item);
+        ItemEntity savedItem =  itemService.saveItem(item);
+        itemProducer.sendItemToKafka(savedItem);
+        return savedItem;
     }
 
     @GetMapping("/{id}")
